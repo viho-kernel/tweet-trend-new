@@ -1,5 +1,9 @@
 pipeline {
-    agent { node { label 'maven' } }
+    agent {
+        node {
+            label 'maven'
+        }
+    }
 
     environment {
         JAVA_HOME = "/usr/lib/jvm/java-21-openjdk-amd64"
@@ -12,6 +16,17 @@ pipeline {
                 sh 'java -version'
                 sh 'mvn -version'
                 sh 'mvn clean deploy'
+            }
+        }
+
+        stage('SonarQube analysis') {
+            environment {
+                scannerHome = tool 'valaxy-sonar-Scanner'
+            }
+            steps {
+                withSonarQubeEnv('valaxy-sonarQube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
             }
         }
     }
