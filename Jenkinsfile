@@ -11,7 +11,7 @@ pipeline {
             steps {
                 sh 'java -version'
                 sh 'mvn -version'
-                sh 'mvn clean deploy -Dmaven.compiler.release=21'
+                sh 'mvn clean deploy'
             }
         }
     }
