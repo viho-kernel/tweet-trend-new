@@ -66,12 +66,12 @@ pipeline {
                      def uploadSpec = """{
                           "files": [
                             {
-                              "pattern": "jarstaging/**/*.jar",
+                              "pattern": "jarstaging/com/valaxy/demo-workshop/**/*.jar",
                               "target": "libs-release-local/com/valaxy/demo-workshop/",
                               "props" : "${properties}"
                             },
                             {
-                  "pattern": "jarstaging/**/*.pom",
+                  "pattern": "jarstaging/com/valaxy/demo-workshop/**/*.pom",
                   "target": "libs-release-local/com/valaxy/demo-workshop/",
                   "props": "${properties}"
                 }
