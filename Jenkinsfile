@@ -21,10 +21,10 @@ pipeline {
 
         stage('SonarQube analysis') {
             environment {
-                scannerHome = tool 'valaxy-sonar-Scanner'
+                scannerHome = tool 'viho-Kernel-sonar-Scanner'
             }
             steps {
-                withSonarQubeEnv('valaxy-sonarQube') {
+                withSonarQubeEnv('viho-kernel-sonarQube') {
                     sh "${scannerHome}/bin/sonar-scanner"
             }
 
