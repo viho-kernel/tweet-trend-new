@@ -66,12 +66,15 @@ pipeline {
                      def uploadSpec = """{
                           "files": [
                             {
-                              "pattern": "jarstaging/(*)",
-                              "target": "libs-release-local/{1}",
-                              "flat": "false",
-                              "props" : "${properties}",
-                              "exclusions": [ "*.sha1", "*.md5"]
-                            }
+                              "pattern": "jarstaging/**/*.jar",
+                              "target": "libs-release-local/com/valaxy/demo-workshop/",
+                              "props" : "${properties}"
+                            },
+                            {
+                  "pattern": "jarstaging/**/*.pom",
+                  "target": "libs-release-local/com/valaxy/demo-workshop/",
+                  "props": "${properties}"
+                }
                          ]
                      }"""
                      def buildInfo = server.upload(uploadSpec)
