@@ -1,26 +1,23 @@
 pipeline {
-    agent {
-        node {
-            label 'maven'
-        }
+    agent { node { label 'maven' } }
+
+    tools {
+        jdk 'jdk21'  // Name must match what you configure in Jenkins -> Global Tool Configuration
+        maven 'maven3' // Optional, if configured
     }
-environment {
-        PATH = "/opt/apache-maven-3.9.5/bin:$PATH"
+
+    environment {
+        JAVA_HOME = "/usr/lib/jvm/java-21-openjdk-amd64"
+        PATH = "/usr/lib/jvm/java-21-openjdk-amd64/bin:/opt/apache-maven-3.9.5/bin:$PATH"
     }
 
     stages {
-        stage('check Java version') {
-            steps {
-                sh 'java -version'
-                sh 'echo $JAVA_HOME'
-                sh 'mvn -version'
-            }
-        }
         stage('Build') {
             steps {
+                sh 'java -version'
+                sh 'mvn -version'
                 sh 'mvn clean deploy'
             }
         }
     }
 }
-
