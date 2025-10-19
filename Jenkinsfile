@@ -4,11 +4,14 @@ pipeline {
             label 'maven'
         }
     }
+environment {
+        PATH = "/opt/apache-maven-3.9.5/bin:$PATH"
+    }
 
     stages {
-        stage('Clone-Code') {
+        stage('build') {
             steps {
-                git branch: 'main', url: 'https://github.com/viho-kernel/tweet-trend-new.git'
+                sh 'mvn clean deploy'
             }
         }
     }
