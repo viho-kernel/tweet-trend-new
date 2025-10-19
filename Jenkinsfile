@@ -19,14 +19,14 @@ pipeline {
             }
         }
 
-        stage('SonarQube analysis') {
+        stage('Sonar analysis') {
             environment {
                 scannerHome = tool 'viho-Kernel-sonar-Scanner'
             }
             steps {
                 withSonarQubeEnv('viho-kernel-sonarQube') {
                     sh "${scannerHome}/bin/sonar-scanner"
-            }
+                }
 
             }
         }
