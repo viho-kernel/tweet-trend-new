@@ -9,7 +9,14 @@ environment {
     }
 
     stages {
-        stage('build') {
+        stage('check Java version') {
+            steps {
+                sh 'java -version'
+                sh 'echo $JAVA_HOME'
+                sh 'mvn -version'
+            }
+        }
+        stage('Build') {
             steps {
                 sh 'mvn clean deploy'
             }
