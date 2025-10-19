@@ -1,4 +1,4 @@
-def registry = 'https://trialjrkno6.jfrog.io'
+def registry = 'https://trialjrkno6.jfrog.io/artifactory'
 
 pipeline {
     agent {
@@ -62,25 +62,23 @@ pipeline {
                 script {
                     echo '<--------------- Jar Publish Started --------------->'
                     sh 'echo "--- Listing files in jarstaging ---"; ls -R jarstaging || echo "No jarstaging folder"'
-
-                    def server = Artifactory.newServer url: registry + "/artifactory", credentialsId: "artifact-cred"
-                    def properties = "buildid=${env.BUILD_ID},commitid=${GIT_COMMIT}"
-
+                    def server = Artifactory.newServer url: registry+"/artifactory" , credentialsId:"artifact-cred"
+                    def properties = "buildid=${env.BUILD_ID},commitid=${GIT_COMMIT}";
                     def uploadSpec = """{
                         "files": [
                             {
-                                "pattern": "jarstaging/com/valaxy/demo-workshop/*/*.jar",
-                                "target": "libs-release-local/com/valaxy/demo-workshop/",
+                                "pattern": "jarstaging/(*)",
+                                "target": "libs-release-local/{1}",
                                 "flat": "false",
-                                "props": "${properties}",
+                                "props":  "${properties}",
                                 "exclusions": ["*.sha1", "*.md5"]
                             }
                         ]
                     }"""
 
-                    def buildInfo = server.upload(spec: uploadSpec)
+                    def buildInfo = server.upload(uploadSpec)
+                    buildInfo.env.collect()
                     server.publishBuildInfo(buildInfo)
-
                     echo '<--------------- Jar Publish Ended --------------->'
                 }
             }
