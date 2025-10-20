@@ -6,10 +6,10 @@ pipeline {
     }
 
     environment {
-        JAVA_HOME = "/usr/lib/jvm/java-21-openjdk-amd64"
-        MAVEN_HOME = "/opt/apache-maven-3.9.5"
-        PATH = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:$PATH"
-    }
+    JAVA_HOME = "/usr/lib/jvm/java-21-openjdk-amd64"
+    PATH = "${JAVA_HOME}/bin:/opt/apache-maven-3.9.5/bin:$PATH"
+}
+
 
     stages {
         stage('Build') {
