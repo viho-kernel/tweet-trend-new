@@ -30,10 +30,10 @@ pipeline {
 
         stage('Sonar analysis') {
             environment {
-                scannerHome = tool 'viho-Kernel-sonar-Scanner'
+                scannerHome = tool 'viho-kernel-sonarQube'
             }
             steps {
-                withSonarQubeEnv('viho-kernel-sonarQube') {
+                withSonarQubeEnv('viho-Kernel-sonar-Scanner') {
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
