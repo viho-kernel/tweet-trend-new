@@ -1,5 +1,3 @@
-def registry = 'https://trialjrkno6.jfrog.io/artifactory'
-
 pipeline {
     agent {
         node {
@@ -9,7 +7,8 @@ pipeline {
 
     environment {
         JAVA_HOME = "/usr/lib/jvm/java-21-openjdk-amd64"
-        PATH = "/usr/lib/jvm/java-21-openjdk-amd64/bin:/opt/apache-maven-3.9.5/bin:$PATH"
+        MAVEN_HOME = "/opt/apache-maven-3.9.5"
+        PATH = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:$PATH"
     }
 
     stages {
@@ -55,33 +54,8 @@ pipeline {
                     }
                 }
             }
-        }   // ✅ This was missing
+        }   
 
-        stage("Publish to Artifactory") {
-            steps {
-                script {
-                    echo '<--------------- Jar Publish Started --------------->'
-                    sh 'echo "--- Listing files in jarstaging ---"; ls -R jarstaging || echo "No jarstaging folder"'
-                    def server = Artifactory.newServer url: registry+"/artifactory" , credentialsId:"artifact-cred"
-                    def properties = "buildid=${env.BUILD_ID},commitid=${GIT_COMMIT}";
-                    def uploadSpec = """{
-                        "files": [
-                            {
-                                "pattern": "jarstaging/(*)",
-                                "target": "libs-release-local/{1}",
-                                "flat": "false",
-                                "props":  "${properties}",
-                                "exclusions": ["*.sha1", "*.md5"]
-                            }
-                        ]
-                    }"""
-
-                    def buildInfo = server.upload(uploadSpec)
-                    buildInfo.env.collect()
-                    server.publishBuildInfo(buildInfo)
-                    echo '<--------------- Jar Publish Ended --------------->'
-                }
-            }
-        }
+        
     }
 }
